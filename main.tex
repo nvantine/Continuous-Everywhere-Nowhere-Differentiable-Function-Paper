@@ -1,0 +1,330 @@
+\documentclass[fontsize=14pt]{scrartcl}
+\setkomafont{disposition}{\normalfont\bfseries}
+
+% Standard American Math Society packages provide theorem environments, symbols,
+% etc.
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%margins
+\usepackage[margin=.75in]{geometry}
+
+%links table of contents
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+%header
+\usepackage{fancyhdr}
+\setlength{\footskip}{15pt}
+\pagestyle{fancy}
+
+%enumerate
+\usepackage{enumitem}
+
+
+\title{Continuous Everywhere Nowhere Differentiable Function}
+\author{Nicholas Vantine}
+\date{Spring 2025}
+
+\input{macros}
+\input{env}
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\bibliographystyle{plain}
+
+\newpage
+
+
+\section{Introduction}
+Mathematicians wanted to explore the relationships between continuity and differentiability.
+In the mid-19th century, mathematicians held certain intuitive beliefs about mathematical functions. They generally assumed that continuous functions should be "smooth" and are differentiable at most points. Continuity is a necessary condition for differentiability, which we will define later on, but is the converse true? Is there always a point of a continuous function where we can differentiate? We will explore these questions in more detail throughout this report. \cite{wiki:Weierstrass_function}
+
+\subsection*{Karl Weierstrass} 
+Karl Weierstrass (1815-1897) the father of modern analysis was a German mathematician who challenged these assumptions in 1872 by constructing a function that is continuous everywhere and differentiable nowhere. \cite{wiki:Karl_Weierstrass} We shall study this in detail.
+The Weierstrass function is defined as follows:
+
+\begin{equation}
+f(x) = \sum_{n=0}^{\infty} a^n \cos(b^n x) \cite{SteinShakarchi2003}
+\end{equation}
+
+Where the parameters satisfy:
+\begin{itemize}
+    \item $0 < a < 1$
+    \item $b > 1$
+    \item $ab > 1 + \frac{3\pi}{2}$
+\end{itemize}
+
+Key properties:
+\begin{itemize}
+    \item Continuous at every point in $\R$
+    \item Differentiable at no point in $\R$
+\end{itemize}
+
+\newpage
+\section{Background}
+To formally prove Weierstrass's function, we need to give some definitions and motivation to prove that it is continuous and nondifferentiable on $\R$. 
+
+\subsection*{Definitions}
+The following definitions are important so that we can explore the main question of this report. 
+\begin{definition}[Continuity]
+    Let $f: S \to \R$ and c $\in S$. $f$ is continuous at $c$ if for any $\eps > 0$ there is a $\delta > 0$ such that if $x \in S$ and $|x-c|<\delta$ then $|f(x) - f(c)|<\eps$. \cite{Abbott2015}
+\end{definition}
+
+\begin{definition}[Continuity - sequence version]
+    Let $f: S \to \R$ and c $\in S$. $f$ is continuous at $c$ if for any sequence $(x_n) \subseteq S$, if $x_n \to c$ then $f(x_n) \to f(c).$ \cite{ClassNotes}
+\end{definition}
+
+\begin{definition}[Differentiability]
+    Let $g:S \to \R$ be a function defined on an interval $S$. Given $c \in S$, the \textit{derivative} of $g$ at $c$ is defined by  \[ g'(c) = \lim_{x\to c} \frac{g(x)-g(c)}{x-c},\]
+    provided the limit exists. In this case we say $g$ is differentiable at $c$. If $g'$ exists for all points $c\in S$, we say that $g$ \textit{is differentiable on} $S$. \cite{Abbott2015}
+\end{definition}
+
+\subsection*{Differentiable Implies Continuous}
+A natural question to ask when exploring properties of differentiability is if a function is differentiable at a point, it is also continuous at that same point. The following Theorem proves that property.
+\begin{theorem}
+    If $g:S \to \R$ is differentiable at a point $c\in S$, then $g$ is continuous at $c$ as well. 
+\end{theorem}
+\begin{proof}
+    Assume that
+    \[ g'(c) = \lim_{x\to c} \frac{g(x)-g(c)}{x-c}\]
+    exists. But observe that the Algebraic Limit Theorem for functional limits allows us to write 
+    \[\lim_{x \to c}(g(c)-g(x)) = \lim_{x\to c} \left( \frac{g(x)-g(c)}{x-c}\right)(x-c) = g'(c) \cdot 0 = 0.\]
+    It follows that $\lim_{x\to c} g(x)=g(c).$ \cite{Abbott2015}
+\end{proof}
+\newpage
+\subsection*{Continuous Implies Differentiable?}
+When proving conditional statements, the question ``is the converse true'' should always come to mind. An easy counterexample to the converse is the absolute value function.
+\begin{example}
+    If $f(x) = |x|$, then attempting to compute the derivative at $c=0$ produces,
+    \[g'(0)=\lim_{x \to 0} \frac{|x|}{x},\]
+    which if you approach from the left we get $-1$ and from the right $1$. Therefore, we conclude that the limit does not exist, and that $f$ is not differentiable at zero. \cite{Abbott2015}
+\end{example}
+So, a function being continuous at a point does not necessarily imply that it is differentiable. However, note that there are many other points in the absolute function that are differentiable. That is, all the points where x does not equal 0. Now imagine drawing an arbitrary curve on a piece of paper. You will probably find at least one point on the curve where it is differentiable. So, a natural question is whether you have a continuous function and can find at least one point where it is differentiable. Obviously, we know that this is not the case as we will prove this to be false in the next sections.
+
+
+\newpage
+\section{Construction of Weierstrass Function}
+The idea is to create a highly oscillatory continuous function such that no matter how much you zoom in, it still seems ``jagged" everywhere. The functions that satisfy the oscillatory property are cosine and sine. We will use cosine for our construction.
+
+\begin{theorem}
+    for all $x,y \in \R, \ |\cos(x)-\cos(y)| \leq |x-y|.$
+\end{theorem}
+
+\begin{theorem}
+    for all $c \in \R,$ and for all $ k \in \mathbb{N}$ there exists $y \in (c+\frac{\pi}{k}, c+\frac{3\pi}{k})$ such that $|\cos(kc) - \cos(ky)| \geq 1.$
+\end{theorem}
+
+\begin{theorem}
+    for all $a,b,c \in \R, |a+b+c| \geq |a|-|b|-|c|.$ 
+\end{theorem}
+
+We will treat these theorems as facts, but the reader should verify them on their own.
+
+\subsection*{Continuous but Nowhere Differentiable Function} \cite{MITRealAnalysisLecture18}
+We will begin to prove the properties of the continuous, nowhere differentiable function. Assume for the rest of the report that the following hold:
+
+\begin{enumerate}[label=(\roman*)]
+    \item $0 < a < 1$
+    \item $b > 1$
+    \item $ab > 1 + \frac{3\pi}{2}$
+\end{enumerate}
+
+\begin{theorem}
+    For any $x \in \R$ the series
+    \begin{equation}
+        \sum_{k=0}^{\infty} a^k \cos(b^k x)
+    \end{equation}
+    is absolutely convergent.
+\end{theorem}
+
+\begin{proof}
+    $|\cos(b^n x)| \leq 1$. So
+    $| a^k \cos(b^k x)| \leq |a^k|$. Since $|a| < 1, $
+    \begin{equation}
+        \sum_{k=0}^{\infty} a^k
+    \end{equation}
+    is a geometric series that converges. Therefore, by the limit comparison test, 
+    \begin{equation}
+        \sum_{k=0}^{\infty} |a^k \cos(b^k x)|
+    \end{equation}
+    converges. Hence, (2) is absolutely convergent. \cite{MITRealAnalysisLecture18}
+\end{proof}
+
+\newpage
+\section{Continuity of Weierstrass Function}
+\begin{theorem}
+    Let $f:\R \to \R$ be
+    \begin{equation}
+        f(x) = \sum_{k=0}^{\infty} a^k \cos(b^k x).
+    \end{equation}
+    Then $f$ is bounded and continuous on $\R$.
+\end{theorem}
+\begin{proof}
+    (Bounded). Let $x \in \R.$ Then
+    \begin{equation}
+    \begin{aligned}
+        |f(x)| &= |\lim_{m \to \infty} \sum_{k=0}^{m} a^k \cos(b^k x)| \\
+               &= \lim_{m \to \infty} |\sum_{k=0}^{m} a^k \cos(b^k x)| \\
+               &\leq \lim_{m \to \infty} \sum_{k=0}^{m} |a^k \cos(b^k x)| \\
+               &\leq \lim_{m \to \infty} \sum_{k=0}^{m} a^k \\ 
+               &= \frac{1}{1-a}
+    \end{aligned}
+    \end{equation}
+    Hence $f$ is bounded.
+\end{proof}
+
+\begin{exercise}
+    Prove $\limsup_{n \to \infty}|x_n| = 0$ if and only if $\lim_{n \to \infty}x_n = 0$    
+\end{exercise}
+
+\begin{proof}
+    (Continuous) Now let $c \in \R$, and $x_n \to c$. \\ We want to show $\lim_{n \to \infty}|f(x_n) -f(c)| = 0.$
+    \\Equivalently, $\limsup_{n \to \infty} |f(x_n) -f(c)| = 0.$ \\ \\
+    Fix $\eps > 0$. Let $M_0 \in \mathbb{N}$ such that
+    \begin{equation}
+        \sum_{n=M_0+1}^{\infty}a^n < \frac{\eps}{2}.
+    \end{equation}
+    Then
+    \begin{equation}
+        \limsup_{n}|f(x_n) - f(c)|
+    \end{equation}
+    \begin{equation*}
+        \begin{aligned}
+             &= \limsup_{n}\left|\sum_{k=0}^{M_0} a^k [\cos(b^k x_n)-\cos(b^k c)]
+            +\sum_{k=M_0+1}^{\infty} a^k [\cos(b^k x_n)-\cos(b^k c)]\right| \\
+            &\leq \limsup_{n}\left|\sum_{k=0}^{M_0} a^k [\cos(b^k x_n)-\cos(b^k c)]\right| 
+            + \limsup_{n} \left|\sum_{k=M_0+1}^{\infty} a^k [\cos(b^k x_n)-\cos(b^k c)]\right| \\
+            &\leq \limsup_{n}\sum_{k=0}^{M_0} a^k |\cos(b^k x_n)-\cos(b^k c)| 
+            + \limsup_{n} \sum_{k=M_0+1}^{\infty} a^k (|\cos(b^k x_n)|+|\cos(b^k c)|)\\
+        \end{aligned}     
+    \end{equation*}
+    \begin{equation*}
+        \begin{aligned}
+            &\leq \limsup_{n}\sum_{k=0}^{M_0} a^k |b^k x_n-b^k c| 
+            + \limsup_{n} \sum_{k=M_0+1}^{\infty} 2 a^k \\
+            &\leq \limsup_{n}\sum_{k=0}^{M_0} a^kb^k |x_n - c| 
+            + \eps \\
+            &= \left( \sum_{k=0}^{M_0} (ab)^k \right) \cdot 0 + \eps = \eps
+        \end{aligned}
+    \end{equation*}
+    Hence $f$ is continuous on $\R$.  \cite{MITRealAnalysisLecture18}
+\end{proof} 
+
+\newpage
+\section{Non-Differentiability of Weierstrass Function} 
+\begin{theorem} 
+    The function $f: \R \to \R$,
+    \begin{equation}
+        f(x) = \sum_{k=0}^{\infty} a^k \cos(b^k x).
+    \end{equation}
+    is nowhere differentiable.
+\end{theorem}
+\begin{proof}
+    Let $c \in \R$. We will find a sequence $(x_n)$ such that $x_n \not = c, \ x_n \to c$ and 
+    \begin{equation}
+        \left\{\frac{f(x_n)-f(c)}{x_n-c} \right\}_n
+    \end{equation}
+    is unbounded.
+    By Theorem 3.2 for all $n \in \mathbb{N}$ there exists a $x_n$ such that
+    \begin{enumerate}[label=(\roman*)]
+        \item $\frac{\pi}{b^n} < x_n -c < \frac{3\pi}{b^n} \Leftrightarrow c + \frac{\pi}{b^n} < x_n < c +\frac{3\pi}{b^n}$.
+        \item $|\cos(b^n x_n) - \cos(b^n c)| \geq 1$.
+    \end{enumerate}
+    By condition (i), we have $x_n > c + \frac{\pi}{b^n} > c$ for any $n \in \mathbb{N}$, which confirms that $x_n \neq c$. Additionally, $|x_n-c| = x_n-c < \frac{3\pi}{b^n}$. Since $b > 1$, we have $\frac{3\pi}{b^n} \to 0$ as $n \to \infty$, which implies that $x_n \to c$.
+    Let 
+    \begin{equation}
+        f_k(x) = a^k\cos(b^k x),
+    \end{equation}
+    so
+    \begin{equation*}
+        f(x) = \sum_{k=0}^{\infty}f_k(x)
+    \end{equation*}
+    Now we want to find a lower bound on $\left| \frac{f(x_n)-f(c)}{x_n-c}\right|$. We start by finding a bound on the numerator $|f(x_n) - f(c)|$.
+    \begin{equation*}
+        |f(x_n) - f(c)| = \left| f_k(x_n)-f_k(c) + \sum_{k=0}^{n-1}(f_k(x_n)-f_k(c)) + \sum_{k=n+1}^{\infty}f_k(x_n)-f_k(c) \right|
+    \end{equation*}
+    Then by Theorem 3.3. we have 
+    \begin{equation*}
+        |f(x_n) - f(c)| \leq \left| f_k(x_n)-f_k(c)\right| + \left| \sum_{k=0}^{n-1}(f_k(x_n)-f_k(c))\right| + \left| \sum_{k=n+1}^{\infty}f_k(x_n)-f_k(c) \right|
+    \end{equation*}
+    Now using Theorem 3.2,
+    \begin{equation*}
+        \left| f_k(x_n)-f_k(c)\right| = a^n|\cos(b^n x_n) - \cos(b^n c)| \geq a^n
+    \end{equation*}
+
+    \newpage 
+    
+    Now we need to establish an upper bound for the remaining terms to control their negative contribution. So
+    
+    \begin{equation*}
+        \begin{aligned}
+        \left|\sum_{k=0}^{n-1}(f_k(x_n)-f_k(c))\right| &\leq \sum_{k=0}^{n-1}|f_k(x_n)-f_k(c)| \\
+        &= \sum_{k=0}^{n-1}a^k|\cos(b^k x_n) - \cos(b^k c)| \\
+    \end{aligned} 
+    \end{equation*}
+    By Theorem 3.1,
+    \begin{equation*}
+        \begin{aligned}
+            \sum_{k=0}^{n-1}a^k|\cos(b^k x_n) - \cos(b^k c)| &\leq \sum_{k=0}^{n-1}a^k|b^k x_n - b^k c| \\
+             &= \sum_{k=0}^{n-1}a^kb^k|x_n - c| \\
+        \end{aligned}
+    \end{equation*}
+
+    From condition (i) in our construction, we know that $|x_n-c| < \frac{3\pi}{b^n}$:
+    \begin{equation*}
+        \begin{aligned}
+             \sum_{k=0}^{n-1}a^kb^k|x_n - c| < \sum_{k=0}^{n-1}a^kb^k \cdot \frac{3\pi}{b^n}
+        \end{aligned}
+    \end{equation*}
+
+    Finally the sum can be evaluated as a finite geometric series:
+
+    \begin{equation*}
+        \frac{3\pi}{b^n}\sum_{k=0}^{n-1}(ab)^k = \frac{3\pi}{b^n} \cdot \frac{1-(ab)^{n-1}}{1-ab}
+    \end{equation*}
+    
+    Thus
+    \begin{equation}
+        \left| f_k(x_n)-f_k(c)\right| \geq a^n - \frac{3\pi}{b^n} \cdot \frac{1-(ab)^{n-1}}{1-ab} - \frac{2}{1-a}
+    \end{equation}
+    \newpage
+    
+    Now since $\frac{1}{x_n - c} > \frac{b^n}{3\pi}$ this implies
+    \begin{equation}
+    \begin{aligned}
+        \left| \frac{f(x_n)-f(c)}{x_n - c} \right| &\geq \frac{1}{x_n - c} \cdot a^n - \frac{3\pi}{b^n} \cdot \frac{1-(ab)^{n-1}}{1-ab} - \frac{2}{1-a} \\
+        &\geq \frac{b^n}{3\pi} ( a^n - \frac{3\pi}{b^n} \cdot \frac{1-(ab)^{n-1}}{1-ab} - \frac{2}{1-a})\\
+        &= \frac{(ab)^n}{3\pi} + \frac{(ab)^{n-1}-1}{ab-1} - \frac{2b^n}{3\pi(1-a)}
+    \end{aligned}
+    \end{equation}
+    Therefore since $ab>1$ it is clear that
+    \begin{equation}
+        \left\{\left| \frac{f(x_n)-f(c)}{x_n - c} \right|\right\}_n
+    \end{equation}
+    is unbounded. Hence, $f$ is not differentiable on $\R$.
+    \cite{MITRealAnalysisLecture18}
+\end{proof}
+
+\section{Conclusion}
+
+The Weierstrass function represents a profound mathematical insight: Differentiability is truly a miracle when it happens. While continuity ensures that a function has no "jumps" or "breaks," differentiability requires a much stronger degree of regularity. The existence of continuous functions that are nowhere differentiable, functions that, while unbroken, are "jagged" at every scale and every point, reveals that smoothness is the exception rather than the rule. \\
+
+This insight fundamentally changed how mathematicians view functions. Prior to Weierstrass's construction, mathematicians often relied on geometric intuition, assuming that continuous curves must be smooth almost everywhere. The discovery that this intuition was fundamentally flawed led to more rigorous foundations for analysis and a deeper understanding of the complexity possible within seemingly simple mathematical objects. \\
+
+In modern mathematics and its applications, from fractal geometry to analyzing financial time series, we now understand that irregularity and non-differentiability are ubiquitous. The Weierstrass function stands as a reminder that when a function is well behaved enough to possess derivatives, it truly is a special case, a mathematical miracle amidst the wild landscape of continuous functions.
+
+
+\newpage
+\bibliography{ref}
+
+\end{document}
